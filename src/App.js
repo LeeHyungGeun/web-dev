@@ -43,8 +43,6 @@ class App {
       ...this.data,
       [key]: Array.isArray(nextData) ? [...nextData] : { ...nextData }
     }
-    Object.keys(this.data).forEach((key) => {
-      this[key].setState && this[key].setState(this.data[key]);
-    });
+    this[key].setState && this[key].setState(this.data[key]);
   }
 }
