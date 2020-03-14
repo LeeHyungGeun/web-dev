@@ -1,15 +1,17 @@
 console.log("app is running!");
 
+const defaultData = {
+  searchInput: {},
+  searchResult: [],
+  imageInfo: {
+    visible: false,
+    image: null
+  }
+};
+
 class App {
   $target = null;
-  data = {
-    searchInput: {},
-    searchResult: [],
-    imageInfo: {
-      visible: false,
-      image: null
-    }
-  };
+  data = Object.assign({}, defaultData);
 
   constructor($target) {
     this.$target = $target;
@@ -34,14 +36,20 @@ class App {
 
     this.imageInfo = new ImageInfo({
       $target,
-      data: this.data.imageInfo
+      data: this.data.imageInfo,
+      onClose: () => {
+        this.setState('imageInfo', {
+          ...this.data.imageInfo,
+          visible: false,
+        })
+      }
     });
   }
 
   setState(key, nextData) {
     this.data = {
       ...this.data,
-      [key]: Array.isArray(nextData) ? [...nextData] : { ...nextData }
+      [key]: Array.isArray(nextData) ? [ ...nextData ] : { ...nextData }
     }
     this[key].setState && this[key].setState(this.data[key]);
   }
