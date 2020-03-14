@@ -22,7 +22,7 @@ class SearchResult {
   }
 
   render() {
-    this.$searchResult.innerHTML = this.data && this.data.length > 0 ? this.data
+    this.$searchResult.innerHTML = this.data.cats && this.data.cats.length > 0 ? this.data.cats
       .map(
         cat => `
           <div class="item">
@@ -33,7 +33,7 @@ class SearchResult {
       .join("") : `
           <div class="notfound-wrap ${hasSearched ? '' : 'hide'}">
             <div class="notfound">
-              <span>검색 결과가 없습니다.</span>
+              <span>${ this.data.isSearching ? '검색중입니다.' : '검색 결과가 없습니다.'}</span>
             </div>
           </div>
         `
@@ -42,7 +42,7 @@ class SearchResult {
 
     this.$searchResult.querySelectorAll(".item").forEach(($item, index) => {
       $item.addEventListener("click", () => {
-        this.onClick(this.data[index]);
+        this.onClick(this.data.cats[index]);
       });
     });
   }

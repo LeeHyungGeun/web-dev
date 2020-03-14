@@ -2,7 +2,10 @@ console.log("app is running!");
 
 const defaultData = {
   searchInput: {},
-  searchResult: [],
+  searchResult: {
+    cats: [],
+    isSearching: false,
+  },
   imageInfo: {
     visible: false,
     image: null
@@ -19,7 +22,9 @@ class App {
     this.searchInput = new SearchInput({
       $target,
       onSearch: keyword => {
-        api.fetchCats(keyword).then(({ data }) => this.setState('searchResult', data));
+        isSearching = true;
+        this.setState('searchResult', { ...this.data.searchResult, isSearching: true });
+        api.fetchCats(keyword).then(({ data }) => this.setState('searchResult', { cats: data, isSearching: false }) );
       }
     });
 
@@ -49,7 +54,8 @@ class App {
   setState(key, nextData) {
     this.data = {
       ...this.data,
-      [key]: Array.isArray(nextData) ? [ ...nextData ] : { ...nextData }
+      // [key]: Array.isArray(nextData) ? [ ...nextData ] : { ...nextData }
+      [key]: { ...nextData }
     }
     this[key].setState && this[key].setState(this.data[key]);
   }
