@@ -20,7 +20,7 @@ class SearchResult {
   }
 
   render() {
-    this.$searchResult.innerHTML = this.data
+    this.$searchResult.innerHTML = this.data;
       .map(
         cat => `
           <div class="item">
