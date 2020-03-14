@@ -51,6 +51,15 @@ body * {
   padding: 10px 15px;
 }
 
+.SearchResult .notfound-wrap .notfound span {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.SearchResult .notfound-wrap.hide {
+  display: none;
+}
+
 .ImageInfo {
   position: fixed;
   left: 0;

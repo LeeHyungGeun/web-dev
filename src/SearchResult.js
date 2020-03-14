@@ -1,3 +1,5 @@
+let hasSearched = false;
+
 class SearchResult {
   $searchResult = null;
   data = null;
@@ -20,7 +22,7 @@ class SearchResult {
   }
 
   render() {
-    this.$searchResult.innerHTML = this.data
+    this.$searchResult.innerHTML = this.data && this.data.length > 0 ? this.data
       .map(
         cat => `
           <div class="item">
@@ -28,7 +30,15 @@ class SearchResult {
           </div>
         `
       )
-      .join("");
+      .join("") : `
+          <div class="notfound-wrap ${hasSearched ? '' : 'hide'}">
+            <div class="notfound">
+              <span>검색 결과가 없습니다.</span>
+            </div>
+          </div>
+        `
+
+    hasSearched = true;
 
     this.$searchResult.querySelectorAll(".item").forEach(($item, index) => {
       $item.addEventListener("click", () => {
