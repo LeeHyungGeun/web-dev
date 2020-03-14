@@ -2,7 +2,14 @@ console.log("app is running!");
 
 class App {
   $target = null;
-  data = [];
+  data = {
+    searchInput: {},
+    searchResult: [],
+    imageInfo: {
+      visible: false,
+      image: null
+    }
+  };
 
   constructor($target) {
     this.$target = $target;
@@ -10,15 +17,15 @@ class App {
     this.searchInput = new SearchInput({
       $target,
       onSearch: keyword => {
-        api.fetchCats(keyword).then(({ data }) => this.setState(data));
+        api.fetchCats(keyword).then(({ data }) => this.setState('searchResult', data));
       }
     });
 
     this.searchResult = new SearchResult({
       $target,
-      initialData: this.data,
+      initialData: this.data.searchResult,
       onClick: image => {
-        this.imageInfo.setState({
+        this.setState('imageInfo', {
           visible: true,
           image
         });
@@ -27,16 +34,18 @@ class App {
 
     this.imageInfo = new ImageInfo({
       $target,
-      data: {
-        visible: false,
-        image: null
-      }
+      data: this.data.imageInfo
     });
   }
 
-  setState(nextData) {
-    console.log(this);
-    this.data = nextData;
+  setState(key, nextData) {
+    this.data = {
+      ...this.data,
+      [key]: Array.isArray(nextData) ? [...nextData] : { ...nextData }
+    }
     this.searchResult.setState(nextData);
+    Object.keys(this.data).forEach((key) => {
+      this[key].setState && this[key].setState(this.data[key]);
+    });
   }
 }
