@@ -22,7 +22,6 @@ class App {
     this.searchInput = new SearchInput({
       $target,
       onSearch: keyword => {
-        isSearching = true;
         this.setState('searchResult', { ...this.data.searchResult, isSearching: true });
         api.fetchCats(keyword).then(({ data }) => this.setState('searchResult', { cats: data, isSearching: false }) );
       }
@@ -54,7 +53,6 @@ class App {
   setState(key, nextData) {
     this.data = {
       ...this.data,
-      // [key]: Array.isArray(nextData) ? [ ...nextData ] : { ...nextData }
       [key]: { ...nextData }
     }
     this[key].setState && this[key].setState(this.data[key]);
